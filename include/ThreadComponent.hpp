@@ -17,7 +17,7 @@ namespace Service
          * @param engine Engine.
          * @param id Component identifier.
          */
-        ThreadComponent(Engine* engine, IdType id);
+        ThreadComponent(Engine* engine, IdType id, uint32_t numberOfThreads=1);
 
         /**
          * @brief Destructor.
@@ -38,8 +38,8 @@ namespace Service
 
     private:
 
-        std::thread m_thread;
-
+        std::vector<std::thread> m_threads;
+        uint32_t m_numberOfThreads;
     };
 }
 
