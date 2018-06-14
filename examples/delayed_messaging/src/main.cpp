@@ -3,6 +3,7 @@
 #include <ReceiverComponent.hpp>
 #include <iostream>
 #include <cstring>
+#include <MessageData.hpp>
 
 int main(int argc, char** argv)
 {
@@ -19,31 +20,46 @@ int main(int argc, char** argv)
 
     while (true)
     {
+        auto msg = new MessageData();
+
+        std::cout << "Enter delay in ms: " << std::endl;
         std::getline(std::cin, input);
 
         if (input == "exit" || input == "quit")
         {
+            delete msg;
             break;
         }
 
-        // Copying
-        auto copy = new char[input.size()];
-        std::memcpy(copy, input.c_str(), input.size());
+        msg->ms = std::chrono::milliseconds(std::stoi(input));
+
+        std::cout << "Enter message: " << std::endl;
+        std::getline(std::cin, input);
+
+        if (input == "exit" || input == "quit")
+        {
+            delete msg;
+            break;
+        }
+
+        msg->string = input;
+
+        std::cout << "Sending entered text..." << std::endl;
 
         processor->addMessageToQueue(
             std::move(
                 Service::Message(
-                    copy,
+                    msg,
                     input.size(),
                     [](void* data, std::size_t size)
                     {
                         std::cout
                             << "Deleting message \""
-                            << std::string((char*) data, size)
+                            << ((MessageData*) data)->string
                             << "\"."
                             << std::endl;
 
-                        delete[] ((char*) data);
+                        delete ((MessageData*) data);
                     }
                 )
             )

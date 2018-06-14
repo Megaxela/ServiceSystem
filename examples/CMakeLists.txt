@@ -1,1 +1,2 @@
 add_subdirectory(components_messaging)
+add_subdirectory(delayed_messaging)
