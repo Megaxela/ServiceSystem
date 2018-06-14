@@ -63,6 +63,28 @@ namespace Service
         void sendMessage(Component::IdType target,
                          Message message);
 
+        /**
+         * @brief Method for routing message to target
+         * component for delayed execution.
+         * @param target Target component id.
+         * @param message Message.
+         * @param mcs Delay.
+         * @return Message id.
+         */
+        std::size_t sendMessageDelayed(Component::IdType target,
+                                       Message message,
+                                       std::chrono::microseconds mcs);
+
+        /**
+         * @brief Method for deleting timed messages.
+         * @param target Target component id.
+         * @param id Message.
+         * @return True - if success. False if there is
+         * no message with such id.
+         */
+        bool deleteDelayedMessage(Component::IdType target,
+                                  std::size_t id);
+
     private:
         std::map<
             Component::IdType,
